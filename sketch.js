@@ -60,16 +60,14 @@ function setup() {
 function draw() {
   background(streetImg); 
   
-  if(gameState==="PLAY"){
   if(street.x<300){
     street.x=width/2;
   }
-
-createEdgeSprites();
-  showPowerCoins();
+  
+   showPowerCoins();
   spawnObstacles();
- 
-  if(keyDown(UP_ARROW)){
+  
+   if(keyDown(UP_ARROW)){
     player.y=player.y-2;
   }
 
@@ -80,6 +78,9 @@ createEdgeSprites();
   if(player.y<=215){
    player.y=260;
   }
+  
+  if(gameState==="PLAY"){
+createEdgeSprites();
 
   if(powerCoinsG.isTouching(player)){
     powerCoinsG.destroyEach();
