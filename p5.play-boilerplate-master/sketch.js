@@ -11,6 +11,7 @@ var powerCoinsG;
 var obstacles,obstaclesImg;
 var obstaclesG;
 var gameOver,gameOverImg,restart,restartImg;
+var bgSound;
 
 function preload(){
 streetImg=loadImage("bg.jpg");
@@ -21,6 +22,7 @@ coinsSound=loadSound("coins.mp3")
 obstaclesImg=loadImage("obstacle.png")
 gameOverImg=loadImage("gameover.png")
 restartImg=loadImage("restart.png")
+bgSound=loadSound("background.mp3")
 }
 
 function setup() {
@@ -64,6 +66,7 @@ function draw() {
     street.x=width/2;
   }
 
+
   if(keyDown(UP_ARROW)){
     player.y=player.y-2;
   }
@@ -75,29 +78,32 @@ function draw() {
   if(player.y<=215){
    player.y=260;
   }
-
-  showPowerCoins();
-  spawnObstacles();
-
-  if(gameState==="PLAY"){
-createEdgeSprites();
   
+  if(gameState==="PLAY"){
+    createEdgeSprites();
   if(powerCoinsG.isTouching(player)){
     powerCoinsG.destroyEach();
    score=score+1;
    coinsSound.play();
     }
 
+    showPowerCoins();
+    spawnObstacles();
+
     if(obstaclesG.isTouching(player)){
       obstaclesG.destroyEach();
       gameState= END;
       }
+
+      //bgSound.play();
+      
     }
       else if (gameState === END) {
         gameOver.visible = true;
         restart.visible=true;
         street.velocityX=0;
         powerCoinsG.destroyEach();
+        obstaclesG.destroyEach();
         theif.visible=false;
         
         if(mousePressedOver(restart)) {
@@ -125,7 +131,7 @@ createEdgeSprites();
 }
 
 function spawnObstacles(){
-  if(frameCount%100===0){
+  if(frameCount%200===0){
     var obstacles=createSprite(650,260,10,10);
     obstacles.addImage("obstacles",obstaclesImg);
     obstacles.scale=0.06;
@@ -139,13 +145,10 @@ function spawnObstacles(){
 
 function reset(){
   gameState=PLAY;
+  score=0;
   gameOver.visible=false;
   restart.visible=false;
   theif.visible=true;
   street.velocityX=-1.6;
-  powerCoinsG.destroyEach();
-  obstaclesG.destroyEach();
-
-  score=0;
 }
 
